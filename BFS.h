@@ -30,15 +30,6 @@ public:
         }
     }
 
-    bool isAlreadyExplored(Node* node) {
-        for (int i = 0 ; i < explored.size() ; i++) {
-            if (*(node) == *(explored[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     void putChildrenInQueue(Node* node) {
         for (int i = 0 ; i < node->state.rows ; i++) {
             for (int j = 0 ; j < node->state.cols ; j++) {
@@ -49,12 +40,7 @@ public:
                         Maze newState = node->state;
                         newState.grid[i][j] = EMPTY;
                         Node* childNode = new Node(node, *(new Maze(newState)));
-
-                        if (!isAlreadyExplored(childNode)) {
-                            queue.push(childNode);
-                        } else {
-                            delete childNode;
-                        }
+                        queue.push(childNode);
                     }
                     // Movement inside the grid
                     else {
@@ -64,12 +50,7 @@ public:
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i][j - 1] = CAR_WE;
                             Node* childNode = new Node(node, *(new Maze(newState)));
-
-                            if (!isAlreadyExplored(childNode)) {
-                                queue.push(childNode);
-                            } else {
-                                delete childNode;
-                            }
+                            queue.push(childNode);
                         }
                         // Move east
                         if (node->state.grid[i][j + 1] == EMPTY) {
@@ -77,12 +58,7 @@ public:
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i][j + 1] = CAR_WE;
                             Node* childNode = new Node(node, *(new Maze(newState)));
-
-                            if (!isAlreadyExplored(childNode)) {
-                                queue.push(childNode);
-                            } else {
-                                delete childNode;
-                            }
+                            queue.push(childNode);
                         }
                     }
                 }
@@ -93,12 +69,7 @@ public:
                         Maze newState = node->state;
                         newState.grid[i][j] = EMPTY;
                         Node* childNode = new Node(node, *(new Maze(newState)));
-
-                        if (!isAlreadyExplored(childNode)) {
-                            queue.push(childNode);
-                        } else {
-                            delete childNode;
-                        }
+                        queue.push(childNode);
                     }
                     // Movement inside the grid
                     else {
@@ -108,12 +79,7 @@ public:
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i + 1][j] = CAR_NS;
                             Node* childNode = new Node(node, *(new Maze(newState)));
-
-                            if (!isAlreadyExplored(childNode)) {
-                                queue.push(childNode);
-                            } else {
-                                delete childNode;
-                            }
+                            queue.push(childNode);
                         }
                         // Move north
                         if (node->state.grid[i - 1][j] == EMPTY) {
@@ -121,12 +87,7 @@ public:
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i - 1][j] = CAR_NS;
                             Node* childNode = new Node(node, *(new Maze(newState)));
-
-                            if (!isAlreadyExplored(childNode)) {
-                                queue.push(childNode);
-                            } else {
-                                delete childNode;
-                            }
+                            queue.push(childNode);
                         }
                     }
                 }
@@ -134,11 +95,12 @@ public:
         }
     }
 
+
     // Returns a sequence of nodes from the current one to the root
     std::vector<Node*> getPath(Node* node) {
         std::vector<Node*> path;
         Node* current = node;
-        while (node != nullptr) {
+        while (current != nullptr) {
             path.push_back(current);
             current = (*current).parent;
         }
