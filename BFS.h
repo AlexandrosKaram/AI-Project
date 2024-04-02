@@ -121,6 +121,7 @@ public:
                 for (int i = 0 ; i < path.size() ; i++) {
                     std::cout << i << ".Move:" << std::endl;
                     path[i]->state.printMaze();
+                    std::cout << std::endl;
                 }
                 // Terminate the algorithm
                 return;
