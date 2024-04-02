@@ -1,6 +1,7 @@
 #include <iostream>
-#include <BFS.h>
+#include "BFS.h"
 
 int main() {
-    return 0;
+    BFS bfs;
+    bfs.bfsSearch();
 }
