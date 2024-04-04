@@ -3,10 +3,11 @@
 #include "Maze.h"
 #include <vector>
 
+// Define Node class
 class Node {
 public:
-    Maze state;
     Node* parent;
+    Maze state;
 
     // Constructors
     Node() : parent(nullptr) {}

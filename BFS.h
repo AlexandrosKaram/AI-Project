@@ -5,14 +5,15 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
+using namespace std;
 
 // Define BFS class
 class BFS {
 private:
     Maze start;
     Maze goal;
-    std::queue<Node*> queue;
-    std::vector<Node*> explored;
+    queue<Node*> queue;
+    vector<Maze> explored;
 
 public:
     BFS() {}
@@ -30,8 +31,8 @@ public:
         }
     }
 
-    bool isInExplored(Node* node) {
-        return std::find(explored.begin(), explored.end(), node) != explored.end();
+    bool isInExplored(Maze state) {
+        return find(explored.begin(), explored.end(), state) != explored.end();
     }
 
     void putChildrenInQueue(Node* node) {
@@ -43,11 +44,10 @@ public:
                     if (j == 0 || j == node->state.cols - 1) {
                         Maze newState = node->state;
                         newState.grid[i][j] = EMPTY;
-                        Node* childNode = new Node(node, *(new Maze(newState)));
-                        if (!isInExplored(childNode)) {
+                        
+                        if (!isInExplored(newState)) {
+                            Node* childNode = new Node(node, *(new Maze(newState)));
                             queue.push(childNode);
-                        } else {
-                            delete childNode; // Delete the node if it's already explored
                         }
                     }
                     // Movement inside the grid
@@ -57,11 +57,10 @@ public:
                             Maze newState = node->state;
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i][j - 1] = CAR_WE;
-                            Node* childNode = new Node(node, *(new Maze(newState)));
-                            if (!isInExplored(childNode)) {
+
+                            if (!isInExplored(newState)) {
+                                Node* childNode = new Node(node, *(new Maze(newState)));
                                 queue.push(childNode);
-                            } else {
-                                delete childNode; // Delete the node if it's already explored
                             }
                         }
                         // Move east
@@ -69,12 +68,11 @@ public:
                             Maze newState = node->state;
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i][j + 1] = CAR_WE;
-                            Node* childNode = new Node(node, *(new Maze(newState)));
-                            if (!isInExplored(childNode)) {
+                            
+                            if (!isInExplored(newState)) {
+                                Node* childNode = new Node(node, *(new Maze(newState)));
                                 queue.push(childNode);
-                            } else {
-                                delete childNode; // Delete the node if it's already explored
-                            }
+                            }                            
                         }
                     }
                 }
@@ -84,11 +82,10 @@ public:
                     if (i == 0 || i == node->state.rows - 1) {
                         Maze newState = node->state;
                         newState.grid[i][j] = EMPTY;
-                        Node* childNode = new Node(node, *(new Maze(newState)));
-                        if (!isInExplored(childNode)) {
+
+                        if (!isInExplored(newState)) {
+                            Node* childNode = new Node(node, *(new Maze(newState)));
                             queue.push(childNode);
-                        } else {
-                            delete childNode; // Delete the node if it's already explored
                         }
                     }
                     // Movement inside the grid
@@ -98,11 +95,10 @@ public:
                             Maze newState = node->state;
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i + 1][j] = CAR_NS;
-                            Node* childNode = new Node(node, *(new Maze(newState)));
-                            if (!isInExplored(childNode)) {
+
+                            if (!isInExplored(newState)) {
+                                Node* childNode = new Node(node, *(new Maze(newState)));
                                 queue.push(childNode);
-                            } else {
-                                delete childNode; // Delete the node if it's already explored
                             }
                         }
                         // Move north
@@ -110,11 +106,10 @@ public:
                             Maze newState = node->state;
                             newState.grid[i][j] = EMPTY;
                             newState.grid[i - 1][j] = CAR_NS;
-                            Node* childNode = new Node(node, *(new Maze(newState)));
-                            if (!isInExplored(childNode)) {
+
+                            if (!isInExplored(newState)) {
+                                Node* childNode = new Node(node, *(new Maze(newState)));
                                 queue.push(childNode);
-                            } else {
-                                delete childNode; // Delete the node if it's already explored
                             }
                         }
                     }
@@ -125,14 +120,14 @@ public:
 
 
     // Returns a sequence of nodes from the current one to the root
-    std::vector<Node*> getPath(Node* node) {
-        std::vector<Node*> path;
+    vector<Node*> getPath(Node* node) {
+        vector<Node*> path;
         Node* current = node;
         while (current != nullptr) {
             path.push_back(current);
             current = (*current).parent;
         }
-        std::reverse(path.begin(), path.end());
+        reverse(path.begin(), path.end());
         return path;
     }
 
@@ -144,25 +139,28 @@ public:
 
             // Success actions
             if ((*current).state == goal) {
-                std::vector<Node*> path = getPath(current);
+                vector<Node*> path = getPath(current);
                 // Print path with indeces
                 for (int i = 0 ; i < path.size() ; i++) {
                     if (i == 0) {
-                        std::cout << "Initial state:" << std::endl;
+                        cout << "Initial state:" << endl;
                     } else {
-                        std::cout << i << ".Move:" << std::endl;
+                        cout << i << ".Move:" << endl;
                     }
                     path[i]->state.printMaze();
-                    std::cout << std::endl;
+                    cout << endl;
                 }
+                // Print statistics
+                cout << "Number of moves: " << path.size() - 1 << endl;
+                cout << "Number of nodes explored: " << explored.size() << endl;
+                cout << "Nodes left in the queue: " << queue.size() << endl;
                 // Terminate the algorithm
                 return;
             }
 
             // Failure actions
             putChildrenInQueue(current);
-            explored.push_back(current);
-
+            explored.push_back(current->state);
         }
         // Target not found
     }

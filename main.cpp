@@ -1,6 +1,7 @@
 #include "BFS.h"
 #include <iostream>
 #include <cstdlib>
+#include <string>
 
 int main(int argc, char* argv[]) {
     // Wrong number of arguments
@@ -30,13 +31,11 @@ int main(int argc, char* argv[]) {
             break;
         }
         case 2: {
-            // Create the second maze (3x3)
-            Maze maze2(3, 3);
-            maze2.grid[0][2] = CAR_WE;
-            maze2.grid[1][0] = ROCK;
-            maze2.grid[1][1] = CAR_WE;
-            maze2.grid[1][2] = CAR_NS;
-            maze2.grid[2][0] = ROCK;
+            // Create a simpler example (2x2)
+            Maze maze2(2, 2);
+            maze2.grid[0][0] = CAR_WE;
+            maze2.grid[0][1] = ROCK;
+            maze2.grid[1][1] = CAR_NS;
 
             // Run BFS on the second maze
             BFS bfs2(maze2);
@@ -44,38 +43,21 @@ int main(int argc, char* argv[]) {
             break;
         }
         case 3: {
-            // Create the third maze (4x3)
-            Maze maze3(4, 3);
-            maze3.grid[0][2] = CAR_WE;
-            maze3.grid[0][3] = ROCK;
-            maze3.grid[1][0] = ROCK;
-            maze3.grid[1][1] = CAR_WE;
-            maze3.grid[1][2] = CAR_NS;
+            // Create a more complex example (4x4)
+            Maze maze3(4, 4);
+            maze3.grid[0][0] = ROCK;
+            maze3.grid[0][1] = CAR_WE;
+            maze3.grid[0][2] = CAR_NS;
+            maze3.grid[1][0] = CAR_WE;
+            maze3.grid[1][1] = ROCK;
+            maze3.grid[1][2] = ROCK;
+            maze3.grid[1][3] = CAR_WE;
             maze3.grid[2][2] = ROCK;
-            maze3.grid[2][3] = ROCK;
+            maze3.grid[3][2] = CAR_WE;
 
             // Run BFS on the third maze
             BFS bfs3(maze3);
             bfs3.bfsSearch();
-            break;
-        }
-        case 4: {
-            // Create the fourth maze (4x4)
-            Maze maze4(4, 4);
-            maze4.grid[0][2] = CAR_WE;
-            maze4.grid[0][3] = ROCK;
-            maze4.grid[1][0] = ROCK;
-            maze4.grid[1][1] = CAR_WE;
-            maze4.grid[1][2] = CAR_NS;
-            maze4.grid[2][2] = ROCK;
-            maze4.grid[2][3] = ROCK;
-            maze4.grid[3][0] = ROCK;
-            maze4.grid[3][1] = ROCK;
-            maze4.grid[3][2] = ROCK;
-
-            // Run BFS on the fourth maze
-            BFS bfs4(maze4);
-            bfs4.bfsSearch();
             break;
         }
         default:
